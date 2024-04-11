@@ -14,8 +14,8 @@
 function path_plan = RRT(start_pos, goal_pos, map, scale)
     %% rrt config parameters
     bias = 1;
-    max_dist = scale*4;
-    max_tree = 20000;
+    max_dist = scale;
+    max_tree = 2000;
     goal_threshold = scale;
 
     %% set up bounds for planning
@@ -128,8 +128,8 @@ function path_plan = RRT(start_pos, goal_pos, map, scale)
     plan = flip(plan);
 
     for i=1: length(plan)
-        path_plan(i,1) = plan(i).x
-        path_plan(i,2) = plan(i).y
+        path_plan(i)(1) = plan.x
+        path)plan(i)(2) = plan.y
     end
 
 

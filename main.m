@@ -6,7 +6,7 @@ close all;
 addpath("environment_files", "initialization", "RRT_algorithm");
 grid_size = 2; %UNITS????
 
-csv_file = "environment_files/GridLayout1.csv";
+csv_file = "environment_files/GridLayout2.csv";
 
 % temp positions for testing, can be random later if we want
 start_pos = [1,1]*grid_size;% - (grid_size)/2; (To center within grid Point)
