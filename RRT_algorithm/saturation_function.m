@@ -1,7 +1,9 @@
 function sat = saturation_function(x, upper_limit, T)
-    if (abs(x) < upper_limit*T)
+disp("x = ")
+disp(x)
+    if (abs(x) <= upper_limit*T)
         sat =  x;
     else 
-        sat = upper_limit*T;
+        sat = sign(x) * upper_limit*T;
     end
 end

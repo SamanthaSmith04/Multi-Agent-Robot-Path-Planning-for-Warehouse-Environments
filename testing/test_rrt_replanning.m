@@ -41,7 +41,7 @@ R = 0.1;                        % Wheel radius [m]
 L = 0.5;                        % Wheelbase [m]
 dd = DifferentialDrive(R,L);
 % Sample time and time array
-sampleTime = 0.1;              % Sample time [s]
+sampleTime = 0.08;              % Sample time [s]
 % Initial conditions
 tVec = 0:sampleTime:size(waypoints,1);        % Time array
 initPose = [1;1;0];            % Initial pose (x y theta)
@@ -51,7 +51,7 @@ pose(:,1) = initPose;
 % Create lidar sensor
 lidar = LidarSensor;
 lidar.sensorOffset = [0,0];
-lidar.scanAngles = linspace(-pi/2,pi/2,51);
+lidar.scanAngles = linspace(-pi/2,pi/2,90);
 lidar.maxRange = 5;
 % Create visualizer
 viz = Visualizer2D;
@@ -81,6 +81,7 @@ while ~has_reached_goal(curPose, goal_pos)
     % Get the sensor readings
     curPose = pose(:,idx-1);
     ranges = lidar(curPose);
+    % min(ranges)
 
     % Run the path following algorithm
     [vRef,wRef,lookAheadPt] = controller(curPose);
@@ -90,12 +91,7 @@ while ~has_reached_goal(curPose, goal_pos)
     vel = bodyToWorld(velB,curPose);  % Convert from body to world
     
     % Perform dynamic replanning
-    [waypoints, changed] = dynamic_RRT_replanning(waypoints, current_waypoint_idx, lidar, curPose, controller.MaxAngularVelocity, vel, map_array, grid_size);
-    
-    % Check if the waypoint has been reached
-    if distance(curPose(1), curPose(2), waypoints(current_waypoint_idx, 1), waypoints(current_waypoint_idx, 2)) < 0.3
-        current_waypoint_idx = current_waypoint_idx + 1 % Move to the next waypoint
-    end
+    [waypoints, changed, current_index_update] = dynamic_RRT_replanning(waypoints, current_waypoint_idx, lidar, curPose, controller.MaxAngularVelocity, vel, map_array, grid_size, L);
     
     % Update controller waypoints and internal state
 
@@ -104,11 +100,18 @@ while ~has_reached_goal(curPose, goal_pos)
 
         pose(:, end + 1) = zeros(3,1);
         tVec(end+1) = tVec(end) + sampleTime;
-        waypoints_added = waypoints_added +1
-  
+        waypoints_added = waypoints_added +1;
+        current_waypoint_idx = current_waypoint_idx + current_index_update;
+
     end
     release(controller);
-    controller.Waypoints = waypoints
+    controller.Waypoints = waypoints;
+
+    % Check if the waypoint has been reached
+    if current_waypoint_idx < size(waypoints, 1) && distance(curPose(1), curPose(2), waypoints(current_waypoint_idx, 1), waypoints(current_waypoint_idx, 2)) < 0.75
+        current_waypoint_idx = current_waypoint_idx + 1 % Move to the next waypoint
+    end
+
 
 
     % Perform forward discrete integration step
