@@ -26,7 +26,7 @@ function  c_test = collision_detector(xNear,yNear,xNew, yNew, map, scale)
         % Check for collisions with the map
         for k = 1:length(xq)
             grid_x = floor(xq(k) / scale) + 1;
-            grid_y = size(map,1) - floor(yq(k) / scale);
+            grid_y = (size(map,1) - floor(yq(k)) / scale);
             
             % Check if the grid cell contains an obstacle or if it is
             % outside of the boundaries
