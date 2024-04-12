@@ -12,6 +12,7 @@
 %}
 
 function path_plan = RRT(start_pos, goal_pos, map, scale)
+    visualize = false;
     %% rrt config parameters
     bias = 1;
     max_dist = scale*4;
@@ -33,30 +34,32 @@ function path_plan = RRT(start_pos, goal_pos, map, scale)
 
 
     %% plot the initial RRT plan graph
-    figure(1); hold on; grid on
-    
-    axis equal
-    axis([x_min,x_max,y_min,y_max]);
-    % plot the boundary
-    plot([x_min, x_min, x_max, x_max, x_min],[y_min, y_max, y_max, y_min, y_min], 'k--', 'LineWidth', 1); 
-    drawnow;
-    % plot the starting point
-    plot(start_pos(1), start_pos(2), 'ko', 'MarkerSize',3, 'MarkerFaceColor','k');
-    drawnow;
-    % plot the goal point and goal region
-    plot(goal_pos(1), goal_pos(2), 'go', 'MarkerSize',3, 'MarkerFaceColor','g');
-    drawnow;
-    th = 0:pi/50:2*pi;
-    xcircle = goal_threshold * cos(th) + goal_pos(1);
-    ycircle = goal_threshold * sin(th) + goal_pos(2);
-    h = plot(xcircle, ycircle);
-    drawnow;
-    % Plot the obstacles
-    for i = 1:map_dims(1) %rows
-        for j = 1:map_dims(2) %cols
-            if map(i, j) == 1
-                rectangle('Position', [(j-1)*scale, (map_dims(1)-i)*scale, scale, scale], 'FaceColor', 'r', 'EdgeColor', 'none');
-                drawnow;
+    if visualize
+        figure(1); hold on; grid on
+        
+        axis equal
+        axis([x_min,x_max,y_min,y_max]);
+        % plot the boundary
+        plot([x_min, x_min, x_max, x_max, x_min],[y_min, y_max, y_max, y_min, y_min], 'k--', 'LineWidth', 1); 
+        drawnow;
+        % plot the starting point
+        plot(start_pos(1), start_pos(2), 'ko', 'MarkerSize',3, 'MarkerFaceColor','k');
+        drawnow;
+        % plot the goal point and goal region
+        plot(goal_pos(1), goal_pos(2), 'go', 'MarkerSize',3, 'MarkerFaceColor','g');
+        drawnow;
+        th = 0:pi/50:2*pi;
+        xcircle = goal_threshold * cos(th) + goal_pos(1);
+        ycircle = goal_threshold * sin(th) + goal_pos(2);
+        h = plot(xcircle, ycircle);
+        drawnow;
+        % Plot the obstacles
+        for i = 1:map_dims(1) %rows
+            for j = 1:map_dims(2) %cols
+                if map(i, j) == 1
+                    rectangle('Position', [(j-1)*scale, (map_dims(1)-i)*scale, scale, scale], 'FaceColor', 'r', 'EdgeColor', 'none');
+                    drawnow;
+                end
             end
         end
     end
@@ -83,9 +86,10 @@ function path_plan = RRT(start_pos, goal_pos, map, scale)
         nodes(iter).y = y_new;
         nodes(iter).parent = p_index;
         nodes(iter).cost = distance(x_new, y_new, x_near, y_near) + nodes(p_index).cost;
-        plot([nodes(iter).x; nodes(p_index).x],[nodes(iter).y; nodes(p_index).y], 'b');
-        pause(0.001);
-        
+        if visualize
+            plot([nodes(iter).x; nodes(p_index).x],[nodes(iter).y; nodes(p_index).y], 'b');
+            pause(0.001);
+        end
         if distance(x_new, y_new, goal_pos(1), goal_pos(2)) <= goal_threshold
             break
         end
@@ -119,7 +123,9 @@ function path_plan = RRT(start_pos, goal_pos, map, scale)
             j=j+1;
             index = index + 1;
         end
-        plot(xPath, yPath, 'g', 'Linewidth', 3);
+        if visualize
+            plot(xPath, yPath, 'g', 'Linewidth', 3);
+        end
         else
             disp('No path found. Increase number of iterations and retry.');
             return;

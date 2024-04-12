@@ -74,6 +74,7 @@ current_waypoint_idx = 1;
 r = rateControl(1/sampleTime);
 %for idx = 2:numel(tVec) 
 idx = 2
+numel(tVec)
 for idx = 2:numel(tVec) 
     % Get the sensor readings
     curPose = pose(:,idx-1);
@@ -95,7 +96,13 @@ for idx = 2:numel(tVec)
     end
     
     % Update controller waypoints and internal state
-    controller.Waypoints = waypoints(current_waypoint_idx:end, :);
+
+    controller.Waypoints = waypoints;
+
+    if changed
+        pose(:, end + 1) = zeros(3,1)
+        tVec(end+1) = tVec(end) + sampleTime;
+    end
 
     % Perform forward discrete integration step
     pose(:,idx) = curPose + vel*sampleTime;
