@@ -1,0 +1,1 @@
+function updated_waypoints = remove_redundant_points(waypoints, current_position)

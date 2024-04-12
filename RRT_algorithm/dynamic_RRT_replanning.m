@@ -34,12 +34,12 @@ function [updated_plan, changed_plan] = dynamic_RRT_replanning(plan, current_pla
 
         Aj = (Aj_minus + Aj_plus) / 2;
         
-        Csat = saturation_function(Aj - theta, uM, T);
+        Csat = saturation_function(Aj + theta, uM, T);
 
         % Insert new path point
         v = current_velocity(1) + current_velocity(2);
         new_path_point = [current_pose(1) + v * cos(Csat), current_pose(2) + v * sin(Csat)];
-        if (collision_detector(current_pose(1), current_pose(2), new_path_point(1), new_path_point(2), map, scale) == 0)
+        if (collision_detector(current_pose(1), current_pose(2), new_path_point(1), new_path_point(2), map, scale) == false)
         if current_plan_step+2 <= size(plan,1) &&(distance(new_path_point(1), new_path_point(2), plan(current_plan_step,1), plan(current_plan_step, 2))) > ...
             (distance(new_path_point(1), new_path_point(2), plan(current_plan_step,1), plan(current_plan_step, 2)))
             updated_plan = [plan(1:current_plan_step, :); new_path_point; plan(current_plan_step+2:end, :)];
@@ -51,6 +51,9 @@ function [updated_plan, changed_plan] = dynamic_RRT_replanning(plan, current_pla
 
         
         changed_plan = true;
+        else
+            disp("not very good ;/")
+
+        end
     end
-   end
 end

@@ -68,57 +68,39 @@ controller.Waypoints = waypoints;
 controller.LookaheadDistance = 0.5;
 controller.DesiredLinearVelocity = 0.75;
 controller.MaxAngularVelocity = 1.5;
-% Vector Field Histogram (VFH) for obstacle avoidance
-% vfh = controllerVFH;
-% vfh.DistanceLimits = [0.05 3];
-% vfh.NumAngularSectors = 36;
-% vfh.HistogramThresholds = [5 10];
-% vfh.RobotRadius = L;
-% vfh.SafetyDistance = L;
-% vfh.MinTurningRadius = 0.25;
+
 %% Simulation loop
 current_waypoint_idx = 1;
 r = rateControl(1/sampleTime);
 %for idx = 2:numel(tVec) 
 idx = 2
- while (current_waypoint_idx < size(waypoints,1))   
+for idx = 2:numel(tVec) 
     % Get the sensor readings
     curPose = pose(:,idx-1);
     ranges = lidar(curPose);
-    % Check if the robot is close to the current waypoint
-    if norm(curPose(1:2) - waypoints(current_waypoint_idx, :).') < 0.1
-        current_waypoint_idx = current_waypoint_idx + 1; % Move to the next waypoint
-        if current_waypoint_idx > size(waypoints, 1)
-            disp("AAAAAAAAAAAAA")
-            break; % Reached the last waypoint, end simulation
-           
-        end
-    end
-% 
-%     % Run the path following and obstacle avoidance algorithms
+
+    % Run the path following algorithm
     [vRef,wRef,lookAheadPt] = controller(curPose);
-%     targetDir = atan2(lookAheadPt(2)-curPose(2),lookAheadPt(1)-curPose(1)) - curPose(3);
-%     steerDir = vfh(ranges,lidar.scanAngles,targetDir);    
-%     if ~isnan(steerDir) && abs(steerDir-targetDir) > 0.1
-%         wRef = 0.5*steerDir;
-%     end
-%     
-%     % Control the robot
-%     velB = [vRef;0;wRef];                   % Body velocities [vx;vy;w]
-%     vel = bodyToWorld(velB,curPose);  % Convert from body to world
+
+    % Control the robot
     velB = [vRef;0;wRef];                   % Body velocities [vx;vy;w]
     vel = bodyToWorld(velB,curPose);  % Convert from body to world
-%     
-    [waypoints, changed] = dynamic_RRT_replanning(waypoints, current_waypoint_idx, lidar, curPose, controller.MaxAngularVelocity, vel, map,grid_size);
-    % Perform forward discrete integration step
-    if changed == true
-        pose(:,end+1) = zeros(3,1);
-        tVec(end+1) = tVec(end) + sampleTime;
-        controller.Waypoints = waypoints;
+    
+    % Perform dynamic replanning
+    [waypoints, changed] = dynamic_RRT_replanning(waypoints, current_waypoint_idx, lidar, curPose, controller.MaxAngularVelocity, vel, map_array, grid_size);
+    
+    % Check if the waypoint has been reached
+    if norm(curPose(1:2) - waypoints(current_waypoint_idx, :)') < 0.1
+        current_waypoint_idx = current_waypoint_idx + 1; % Move to the next waypoint
     end
+    
+    % Update controller waypoints and internal state
+    controller.Waypoints = waypoints(current_waypoint_idx:end, :);
+
+    % Perform forward discrete integration step
     pose(:,idx) = curPose + vel*sampleTime;
+    
     % Update visualization
     viz(pose(:,idx),waypoints,ranges)
     waitfor(r);
-    idx = idx +1;
 end
