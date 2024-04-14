@@ -13,13 +13,13 @@ close all;
 
 % Create waypoints
 %% Initial Values
-load exampleMap
+%load exampleMap
 
 grid_size = 1; %UNITS????
 
-csv_file = "environment_files/GridLayout1.csv";
+csv_file = "/../environment_files/GridLayout1.csv";
 
-obstacle_csv = "environment_files/GridLayout1b.csv";
+obstacle_csv = "/../environment_files/GridLayout1b.csv";
 
 
 % temp positions for testing, can be random later if we want

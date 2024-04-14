@@ -1,4 +1,4 @@
-function [node_path] = AstarDigraph(G,start,target,map,grid_size,start_pos,goal_pos)
+function [node_path] = AstarDigraph(G,start,target,map,grid_size,start_pos,goal_pos,fig_num)
 %Astar Digraph - For a given digraph it finds the shortest path
 %   G - The digraph being search
 %   Map - A map of node number to coordinates of node
@@ -6,6 +6,10 @@ function [node_path] = AstarDigraph(G,start,target,map,grid_size,start_pos,goal_
 %   target - set of nodes with in radius of end point
 %   return: node_path = [start, ..., x \in target] 
 %               (...: respresnts node numbers in between)
+viz = 0;
+if(nargin > 3)
+    viz = 1;
+end
 
 N = numnodes(G);
 open = [start];
@@ -17,9 +21,10 @@ estCost(start) = heuristic(G,start,target); % TODO Write up heuristic function
 
 parent = zeros(1,N); % Stores the parent node for each node
 
-scale = grid_size;
-%%Viz
-bias = 1;
+scale = 1;
+if  viz
+    scale = grid_size;
+    bias = 1;
     max_dist = scale;
     max_tree = 2000;
     goal_threshold = scale;
@@ -34,7 +39,7 @@ bias = 1;
 
 
     %% plot the initial RRT plan graph
-    figure(1); hold on; grid on
+    figure(fig_num); hold on; grid on
     
     axis equal
     axis([x_min,x_max,y_min,y_max]);
@@ -61,6 +66,7 @@ bias = 1;
             end
         end
     end
+end
 
 %Debugging to see all connections in the graph
 %     for i = 1:N
@@ -92,6 +98,7 @@ while size(open) > 0
             node_path = [current,node_path]; %#ok<*SAGROW>
         end
         
+        if(viz)
         X_coord = G.Nodes.X(node_path);
         Y_coord = G.Nodes.Y(node_path);
 
@@ -99,6 +106,7 @@ while size(open) > 0
         for i = 2:size(X_coord)
         plot([X_coord(i-1); X_coord(i)],[Y_coord(i-1); Y_coord(i)], 'g');
             pause(0.02);
+        end
         end
         
         return;
@@ -120,11 +128,12 @@ while size(open) > 0
             open = [open(compare),nbr,open(~compare)];
             
             %Viz
+            if(viz)
             X_coord = G.Nodes.X([parent(nbr),nbr]);
             Y_coord = G.Nodes.Y([parent(nbr),nbr]);
             plot(X_coord,Y_coord, 'b');
             pause(0.001);
-            
+            end
         end
     end
 end
