@@ -13,7 +13,10 @@ close all;
 
 % Create waypoints
 %% Initial Values
+<<<<<<< HEAD
 %load exampleMap
+=======
+>>>>>>> 7fb4f5492ef31a16946bf14a4d423efa8017a117
 
 grid_size = 1; %UNITS????
 
@@ -33,7 +36,7 @@ map = robotics.OccupancyGrid(get_map_array(obstacle_csv), 1);
 % any other pre-planning operations that need to be done
 
 %% Path planning
-waypoints = RRT(start_pos, goal_pos, map_array, grid_size)
+waypoints = RRT(start_pos, goal_pos, map_array, grid_size, false)
 
 
 % Define Vehicle
@@ -47,7 +50,6 @@ tVec = 0:sampleTime:size(waypoints,1);        % Time array
 initPose = [1;1;0];            % Initial pose (x y theta)
 pose = zeros(3,numel(tVec));   % Pose matrix
 pose(:,1) = initPose;
-% Load map
 % Create lidar sensor
 lidar = LidarSensor;
 lidar.sensorOffset = [0,0];
@@ -102,10 +104,10 @@ while ~has_reached_goal(curPose, goal_pos)
         tVec(end+1) = tVec(end) + sampleTime;
         waypoints_added = waypoints_added +1;
         current_waypoint_idx = current_waypoint_idx + current_index_update;
-
+        release(controller);
+        controller.Waypoints = waypoints;
     end
-    release(controller);
-    controller.Waypoints = waypoints;
+
 
     % Check if the waypoint has been reached
     if current_waypoint_idx < size(waypoints, 1) && distance(curPose(1), curPose(2), waypoints(current_waypoint_idx, 1), waypoints(current_waypoint_idx, 2)) < 0.75

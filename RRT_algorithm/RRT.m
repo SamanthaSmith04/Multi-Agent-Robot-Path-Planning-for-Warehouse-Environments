@@ -11,8 +11,7 @@
                    Order of points: start -> goal
 %}
 
-function path_plan = RRT(start_pos, goal_pos, map, scale)
-    visualize = false;
+function path_plan = RRT(start_pos, goal_pos, map, scale, visualize)
     %% rrt config parameters
     bias = 1;
     max_dist = scale*4;

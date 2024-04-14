@@ -6,7 +6,6 @@ function [phi, time] = motionPlan(road, thetaInit)
 
 %road is the waypoints of the path planned from the algorithms
 %thetaInit is the initial angle of the robot from the x axis
-
 robotInitialLocation = road(1,:);
 robotGoal            = road(end,:);
 
