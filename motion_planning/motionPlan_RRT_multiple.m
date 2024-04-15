@@ -82,10 +82,10 @@ while( any(distances > goalRadius))
         end     
     
         % Compute the controller outputs, i.e., the inputs to the robot
-        [v, omega] = robots_array(i).controller(robots_array(i).pose(iter, :)');        
+        [v, omega] = robots_array(i).controller(robots_array(i).pose(end, :)');        
     
         % Get the robot's velocity using controller inputs
-        vel = derivative(robots_array(i).robot, robots_array(i).pose(iter, :), [v omega]);
+        vel = derivative(robots_array(i).robot, robots_array(i).pose(end, :), [v omega]);
     
         vel_out    = [vel_out  vel(1:2,:)];
         angvel_out = [angvel_out vel(3,:)]; %#ok<*AGROW> 
@@ -97,7 +97,7 @@ while( any(distances > goalRadius))
         robots_array(i).Ol = [robots_array(i).Ol; Vl/robots_array(i).r];
     
         [robots_array(i).road, changed, current_index_update] = dynamic_RRT_replanning(robots_array(i).road, ...
-            robots_array(i).current_waypoint_idx, robots_array(i).lidar, robots_array(i).pose(iter,:)', ...
+            robots_array(i).current_waypoint_idx, robots_array(i).lidar, robots_array(i).pose(end,:)', ...
             robots_array(i).controller.MaxAngularVelocity, vel, map_array, scale, robots_array(i).d);
     
     
@@ -110,26 +110,26 @@ while( any(distances > goalRadius))
     
         % Check if the waypoint has been reached
         if robots_array(i).current_waypoint_idx < size(robots_array(i).road, 1) && ...
-            distance(robots_array(i).pose(iter, 1), robots_array(i).pose(iter, 2), ...
+            distance(robots_array(i).pose(end, 1), robots_array(i).pose(end, 2), ...
             robots_array(i).road(robots_array(i).current_waypoint_idx, 1), ...
             robots_array(i).road(robots_array(i).current_waypoint_idx, 2)) < 0.75
             robots_array(i).current_waypoint_idx = robots_array(i).current_waypoint_idx + 1; % Move to the next waypoint
         end
     
         % Store previous pose
-        robots_array(i).robotPosesAndTimestamps(end+1, :) = [robots_array(i).pose(iter, :), time(end)];
+        robots_array(i).robotPosesAndTimestamps(end+1, :) = [robots_array(i).pose(end, :), time(end)];
     
         % Update the current pose
-        newPose = robots_array(i).pose(iter, :) + vel*sampleTime;
+        newPose = robots_array(i).pose(end, :) + (vel*sampleTime)';
         robots_array(i).pose = [robots_array(i).pose; newPose]; 
         
         % Re-compute the distance to the goal
-        robots_array(i).distanceToGoal = norm(robots_array(i).pose(iter, 1:2) - robots_array(i).robotGoal(:));
+        robots_array(i).distanceToGoal = norm(robots_array(i).pose(end, 1:2) - robots_array(i).robotGoal(:));
     
         robots_array(i).phi = [robots_array(i).Or robots_array(i).Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
-        robots_array(i).time = robots_array(i).time + t;
+        robots_array(i).time = [robots_array(i).time + t];
     end
-        vizualizeFARmotion3(robots_array, t, map_array, scale,2)
+        visualizeRRTmotion3(robots_array, t, map_array, scale,2)
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix
         distances = goal_distance_all_robots(robots_array);

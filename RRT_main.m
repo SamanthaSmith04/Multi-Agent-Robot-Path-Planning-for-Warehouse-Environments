@@ -41,7 +41,7 @@ bot3.goal = goal_pos3;
 
 road1 = RRT(start_pos, goal_pos, map_array, grid_size, false)
 road2 = RRT(start_pos2, goal_pos2, map_array, grid_size, false)
-road3 = RRT(start_pos3, goal_pos3, map_array, grid_size, false)
+road3 = RRT(start_pos3, goal_pos3, map_array, grid_size, false);
 
 bot1.road = road1;
 bot2.road = road2;

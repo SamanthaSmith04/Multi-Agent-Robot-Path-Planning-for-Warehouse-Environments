@@ -51,7 +51,7 @@ frameSize = robot.TrackWidth/0.8;
 
 vizRate = rateControl(1/(timeStep*0.1));
 %Assume All Robots have the same number of time stamps
-numSteps = length(simulated_robots(1).time);
+numSteps = length(simulated_robots(1).time)
 for i = 1:1:numSteps
     hold off;
     
@@ -80,7 +80,7 @@ for i = 1:1:numSteps
     end
     
     for j=1:num_bots
-        robotCurrentPose = simulated_robots(j).pose(i,:);
+        robotCurrentPose = simulated_robots(j).pose(i,:)
         % Plot the path of the robot as a set of transforms
         plotTrVec = [robotCurrentPose(1:2)'; 0];
         plotRot = axang2quat([0 0 1 robotCurrentPose(3)]);
