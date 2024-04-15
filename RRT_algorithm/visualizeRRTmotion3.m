@@ -30,7 +30,6 @@ for i = 1:map_dims(1) %rows
         end
     end
 end
-drawnow;
 
 hold on;
 inital_path_plots = ['k--','b--','g--'];
@@ -67,7 +66,6 @@ for k = 1:map_dims(1) %rows
         end
     end
 end
-drawnow;
 
 hold on;
 
@@ -84,7 +82,10 @@ for j=1:num_bots
     plotRot = axang2quat([0 0 1 robotCurrentPose(3)]);
     plotTransforms(plotTrVec', plotRot, "MeshFilePath", "groundvehicle.stl", "Parent", gca, "View","2D", "FrameSize", frameSize, "MeshColor", color_strings(j));
     light;
+    drawnow;
+
 end
+
 
 waitfor(vizRate);
 

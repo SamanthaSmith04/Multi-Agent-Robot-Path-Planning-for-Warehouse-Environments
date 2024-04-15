@@ -1,6 +1,6 @@
-function [oc_map, updated_array] = update_lidar_map(map, robot, map_array_original, value)
+function [oc_map, updated_array] = update_lidar_map(map, robot, map_array, map_array_original, value)
     oc_map = map;
-    updated_array = map_array_original;
+    updated_array = map_array;
     x = robot.pose(end, 1);
     y = robot.pose(end, 2);
 

@@ -18,7 +18,7 @@ goal_pos = [43,2]*grid_size;% - (grid_size)/2;
 
 
 start_pos2 = [1,4]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos2 = [2,5]*grid_size;% - (grid_size)/2;
+goal_pos2 = [1,10]*grid_size;% - (grid_size)/2;
 
 start_pos3 = [2,24]*grid_size;% - (grid_size)/2; (To center within grid Point)
 goal_pos3 = [40,15]*grid_size;% - (grid_size)/2;;

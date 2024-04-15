@@ -1,4 +1,4 @@
-function [phi, time, position_time_matrix] = motionPlan_RRT(robots_array, map, map_a, scale)
+function [phi, time, position_time_matrix] = motionPlan_RRT(robots_array, map, map_original_array, scale)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -8,7 +8,7 @@ function [phi, time, position_time_matrix] = motionPlan_RRT(robots_array, map, m
 %road is the road of the path planned from the algorithms
 %thetaInit is the initial angle of the robot from the x axis
 num_robots = numel(robots_array);
-map_array = map_a
+map_array = map_original_array;
 for i=1:num_robots 
     robots_array(i).robotInitialLocation = robots_array(i).road(1,:);
     robots_array(i).robotGoal            = robots_array(i).road(end,:);
@@ -27,7 +27,7 @@ for i=1:num_robots
     % Create lidar sensor
     robots_array(i).lidar = LidarSensor;
     robots_array(i).lidar.sensorOffset = [0,0];
-    robots_array(i).lidar.scanAngles = linspace(-pi/3,pi/3,90);
+    robots_array(i).lidar.scanAngles = linspace(-pi/2,pi/2,90);
     robots_array(i).lidar.maxRange = 3;
     
     % Create visualizer
@@ -79,7 +79,7 @@ while( any(distances > goalRadius))
         if (distances(i) <= goalRadius) 
             continue;
         end     
-        [map, map_array] = update_lidar_map(map, robots_array(i), map_a, 0);
+        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 0);
 
         % Compute the controller outputs, i.e., the inputs to the robot
         [v, omega] = robots_array(i).controller(robots_array(i).pose(end, :)');        
@@ -105,6 +105,9 @@ while( any(distances > goalRadius))
         if changed
             disp("PATH CHANGED FOR ROBOT")
             disp(i)
+            
+            disp("Closest lidar detection")
+            disp(min(robots_array(i).lidar(robots_array(i).pose(end,:)')))
             robots_array(i).current_waypoint_idx = robots_array(i).current_waypoint_idx + current_index_update;
             release(robots_array(i).controller);
             robots_array(i).controller.Waypoints = robots_array(i).road;
@@ -132,10 +135,10 @@ while( any(distances > goalRadius))
         robots_array(i).phi = [robots_array(i).Or robots_array(i).Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
         robots_array(i).time = robots_array(i).time + t;
 
-        [map, map_array] = update_lidar_map(map, robots_array(i), map_a, 1);
-        visualizeRRTmotion3(robots_array, t, map_array, scale,2);
+        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
 
     end
+        visualizeRRTmotion3(robots_array, t, map_array, scale,2);
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix
         distances = goal_distance_all_robots(robots_array);
