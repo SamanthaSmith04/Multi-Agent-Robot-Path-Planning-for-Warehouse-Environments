@@ -1,9 +1,10 @@
-function [phi, time] = motionPlan_RRT(road, thetaInit, map, map_array, scale)
+function [phi, time, position_time_matrix] = motionPlan_RRT(road, thetaInit, map, map_array, scale)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
 %time is the overall time vector for the planning
-
+%position_time_matrix is the position and timestamp of each robot pose at
+%each sample time
 %road is the road of the path planned from the algorithms
 %thetaInit is the initial angle of the robot from the x axis
 robotInitialLocation = road(1,:);
@@ -12,6 +13,8 @@ robotGoal            = road(end,:);
 initialOrentation    = thetaInit;
 
 robotCurrentPose     = [robotInitialLocation initialOrentation]';
+
+robotPosesAndTimestamps = zeros(1,4);
 
 %%
 
@@ -101,6 +104,9 @@ while( distanceToGoal > goalRadius )
         current_waypoint_idx = current_waypoint_idx + 1 % Move to the next waypoint
     end
 
+    % Store previous pose
+    robotPosesAndTimestamps(end+1, :) = [robotCurrentPose', time(end)];
+
     % Update the current pose
     robotCurrentPose = robotCurrentPose + vel*sampleTime; 
     
@@ -120,14 +126,14 @@ while( distanceToGoal > goalRadius )
     plotRot = axang2quat([0 0 1 robotCurrentPose(3)]);
     plotTransforms(plotTrVec', plotRot, "MeshFilePath", "groundvehicle.stl", "Parent", gca, "View","2D", "FrameSize", frameSize);
     light;
-    
+
     waitfor(vizRate);
     iter = iter+1;
     time(end+1) = t*iter; %elaped time matrix
     phi = [Or Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
 
 end
-
+    position_time_matrix = robotPosesAndTimestamps(2:end);
 end
 
 

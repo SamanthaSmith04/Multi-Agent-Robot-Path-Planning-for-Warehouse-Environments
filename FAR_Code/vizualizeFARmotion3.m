@@ -38,7 +38,7 @@ color_strings = ["black","blue","green"];
 num_bots = length(simulated_robots);
 for i = 1:num_bots
    road = simulated_robots(i).road;
-   plot(road(:,1), road(:,2), inital_path_plots(i)) 
+   plot(road(:,1), road(:,2), inital_path_plots(i));
 end
 hold off;
 
@@ -80,7 +80,7 @@ for i = 1:1:numSteps
     end
     
     for j=1:num_bots
-        robotCurrentPose = simulated_robots(j).prose(i,:);
+        robotCurrentPose = simulated_robots(j).pose(i,:);
         % Plot the path of the robot as a set of transforms
         plotTrVec = [robotCurrentPose(1:2)'; 0];
         plotRot = axang2quat([0 0 1 robotCurrentPose(3)]);

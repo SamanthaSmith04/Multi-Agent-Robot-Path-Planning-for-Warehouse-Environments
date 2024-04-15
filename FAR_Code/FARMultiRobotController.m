@@ -22,7 +22,7 @@ currentTime = 0.0;
 
 %init steps for each path
 for i = 1:num_robots
-    robot_array(i).prose = [robot_array(i).start 0]; % \in R^(1x3)
+    robot_array(i).pose = [robot_array(i).start 0]; % \in R^(1x3)
     robot_array(i).currentProse = [robot_array(i).start 0];
     robot_array(i).time = [currentTime];
     robot_array(i).plannedTime = currentTime; % Time that robot is planned upuntil
@@ -112,10 +112,10 @@ while sum(running)
                 [phi, time, robotProses] = FARmotionPlan(road, startProse, timeStep);
                 bot.phi = [bot.phi;phi];
                 bot.time = [bot.time, time+bot.time(end)];
-                bot.prose = [bot.prose;robotProses];
+                bot.pose = [bot.pose;robotProses];
                 
                 bot.plannedTime = bot.time(end);
-                bot.currentProse = bot.prose(end,:);
+                bot.currentProse = bot.pose(end,:);
                 just_started_queue = [just_started_queue, i];
                 %Even if it is 'completed' it will be added into the queue
                 %So that nodes are removed from the reservation at the
@@ -124,9 +124,9 @@ while sum(running)
                 %If no movement, then the robot remains stationary 
                 bot.phi = [bot.phi;0 0];
                 bot.time = [bot.time, currentTime];
-                bot.prose = [bot.prose;bot.prose(end,:)];
+                bot.pose = [bot.pose;bot.pose(end,:)];
                 bot.plannedTime = bot.time(end);
-                bot.currentProse = bot.prose(end,:);
+                bot.currentProse = bot.pose(end,:);
                 disp('here');
                 no_movement_queue = [no_movement_queue, i];
             end
@@ -167,10 +167,10 @@ for i = 1:1:num_robots
      additional = timeEnd(i) + timeStep;
      moreTime = [additional:timeStep:fillTime];
      num_addition = length(moreTime);
-     additionalProse = repmat(robot_array(i).prose(end,:),num_addition,1);
+     additionalProse = repmat(robot_array(i).pose(end,:),num_addition,1);
      additionalPhi = repmat([0,0],num_addition,1);
      robot_array(i).time = [robot_array(i).time,moreTime];
-     robot_array(i).prose = [robot_array(i).prose;additionalProse];
+     robot_array(i).pose = [robot_array(i).pose;additionalProse];
      robot_array(i).phi = [robot_array(i).phi;additionalPhi];
      
 end
