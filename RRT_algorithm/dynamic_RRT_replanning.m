@@ -1,7 +1,7 @@
 function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replanning(plan, current_plan_step, lidar, current_pose, uM, current_velocity, map, scale, L)
    updated_plan = plan;
    changed_plan = false;
-   safety_region_size = 0.75; % Safety region size in units
+   safety_region_size = 2; % Safety region size in units
    current_index_update = 0;
    deletion_threshold = 1.5;
    T = 0.01; % Sampling interval in seconds
