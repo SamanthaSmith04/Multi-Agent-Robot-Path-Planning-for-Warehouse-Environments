@@ -43,11 +43,11 @@ function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replan
        if ~collision_detector(current_pose(1), current_pose(2), new_path_point(1), new_path_point(2), map, scale)
            if current_plan_step+1 < size(plan,1) && distance_between_current_and_next_original >= distance_between_new_and_current && distance_between_current_and_next_original - distance_between_new_and_current <= deletion_threshold
                updated_plan = [plan(1:current_plan_step-1, :); new_path_point; plan(current_plan_step+1:end, :)];
-               disp("CASE 1")
-               current_index_update = -1
+               %disp("CASE 1")
+               current_index_update = -1;
            else
                updated_plan = [plan(1:current_plan_step-1, :); new_path_point; plan(current_plan_step:end, :)];
-               disp("CASE 2")
+               %disp("CASE 2")
            end
            changed_plan = true;
            current_index_update = 1;

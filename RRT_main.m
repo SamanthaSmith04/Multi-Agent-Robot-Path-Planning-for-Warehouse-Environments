@@ -9,19 +9,10 @@ grid_size = 1; %UNITS????
 csv_file = "environment_files/GridLayout2.csv";
 
 csv_file2 = "environment_files/GridLayout2.csv";
-  
-num_robots = 2
 
-% temp positions for testing, can be random later if we want
-start_pos = [1,1]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos = [43,2]*grid_size;% - (grid_size)/2;
+robot_positions_csv = ""
 
-
-start_pos2 = [1,4]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos2 = [1,10]*grid_size;% - (grid_size)/2;
-
-start_pos3 = [2,24]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos3 = [40,15]*grid_size;% - (grid_size)/2;;
+robot_positions = get_position_and_goals(robot_positions_csv);
 
 %% Set up grid
 map_array = get_map_array(csv_file)
@@ -29,29 +20,16 @@ map_array2 = get_map_array(csv_file2)
 
 map = robotics.OccupancyGrid(map_array2, 1);
 % any other pre-planning operations that need to be done
+for num_robots=1: size(robot_positions,1)
+    robot.start = robot_positions(num_robots, 1:2);
+    robot.goal = robot_positions(num_robots, 3:4);
+    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, false);
+    robot.original_road = robot.road;
+    robot.thetaInit = 45;
 
-%% Path planning
-bot1.start = start_pos;
-bot2.start = start_pos2;
-bot3.start = start_pos3;
+    robots(i) = robot;
+end
 
-bot1.goal = goal_pos;
-bot2.goal = goal_pos2;
-bot3.goal = goal_pos3;
-
-road1 = RRT(start_pos, goal_pos, map_array, grid_size, false)
-road2 = RRT(start_pos2, goal_pos2, map_array, grid_size, false)
-%road3 = RRT(start_pos3, goal_pos3, map_array, grid_size, false);
-
-bot1.road = road1;
-bot2.road = road2;
-%bot3.road = road3;
-
-bot1.thetaInit = 45;
-bot2.thetaInit = 45;
-bot3.thetaInit = 45;
-
-robots = [bot1, bot2]
 disp("ready")
-[phi, time, position_time_matrix] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size)
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size);
 %[phi, time, position_time_matrix] = motionPlan_RRT(plan1, 45, map, map_array2, grid_size)

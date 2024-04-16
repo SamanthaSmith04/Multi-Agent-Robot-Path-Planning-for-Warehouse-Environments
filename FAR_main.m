@@ -10,14 +10,14 @@ csv_file = "environment_files/GridLayout2.csv";
 
 % temp positions for testing, can be random later if we want
 start_pos = [1,1]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos = [43,2]*grid_size;% - (grid_size)/2;
+goal_pos = [25,2]*grid_size;% - (grid_size)/2;
 
 
-start_pos2 = [1,13]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos2 = [43,25]*grid_size;% - (grid_size)/2;
+start_pos2 = [10,2]*grid_size;% - (grid_size)/2; (To center within grid Point)
+goal_pos2 = [1,25]*grid_size;% - (grid_size)/2;
 
-start_pos3 = [2,24]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos3 = [40,15]*grid_size;% - (grid_size)/2;
+start_pos3 = [35,20]*grid_size;% - (grid_size)/2; (To center within grid Point)
+goal_pos3 = [2,12]*grid_size;% - (grid_size)/2;
 
 
 %% Set up grid
@@ -28,7 +28,7 @@ map = get_map_array(csv_file);
 fig_num = 1;
 G = FlowAnnotatedGraph(map, grid_size);
 [start,target] = getStartAndTarget(map,grid_size,start_pos,goal_pos);
-node_path = AstarDigraph(G,start,target);
+node_path = AstarDigraph(G,start,target,map,grid_size,start_pos,goal_pos,fig_num);
 
 [start2,target2] = getStartAndTarget(map,grid_size,start_pos2,goal_pos2);
 node_path2 = AstarDigraph(G,start2,target2);

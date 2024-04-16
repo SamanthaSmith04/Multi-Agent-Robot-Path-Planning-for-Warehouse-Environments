@@ -1,4 +1,4 @@
-function [phi, time, position_time_matrix] = motionPlan_RRT(robots_array, map, map_original_array, scale)
+function [phi, time, robots_array] = motionPlan_RRT(robots_array, map, map_original_array, scale)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -53,7 +53,7 @@ for i=1:num_robots
     robots_array(i).time = 0;
 
 end
-goalRadius = 0.1;
+goalRadius = 0.3;
 
 %%
 
@@ -103,11 +103,6 @@ while( any(distances > goalRadius))
         end
     
         if changed
-            disp("PATH CHANGED FOR ROBOT")
-            disp(i)
-            
-            disp("Closest lidar detection")
-            disp(min(robots_array(i).lidar(robots_array(i).pose(end,:)')))
             robots_array(i).current_waypoint_idx = robots_array(i).current_waypoint_idx + current_index_update;
             release(robots_array(i).controller);
             robots_array(i).controller.Waypoints = robots_array(i).road;
@@ -130,25 +125,22 @@ while( any(distances > goalRadius))
         robots_array(i).pose = [robots_array(i).pose; newPose]; 
         
         % Re-compute the distance to the goal
-        robots_array(i).distanceToGoal = norm(robots_array(i).pose(end, 1:2) - robots_array(i).robotGoal(:));
-    
+        robots_array(i).distanceToGoal = distance(newPose(1), newPose(2), robots_array(i).robotGoal(1), robots_array(i).robotGoal(2));
         robots_array(i).phi = [robots_array(i).Or robots_array(i).Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
         robots_array(i).time = robots_array(i).time + t;
 
         [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
 
     end
-        visualizeRRTmotion3(robots_array, t, map_array, scale,2);
+        %visualizeRRTmotion3(robots_array, t, map_array, scale,2);
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix
         distances = goal_distance_all_robots(robots_array);
-    
 
 end
-    for i = 1: num_robots
-        phi(i) = robots_array(i).phi;
-    end
-    %position_time_matrix = robots_array(i).robotPosesAndTimestamps(2:end);
+    phi = zeros(2)
+    
+    plot_robot_paths(robots_array, 3, map_array, scale)
 end
 
 
