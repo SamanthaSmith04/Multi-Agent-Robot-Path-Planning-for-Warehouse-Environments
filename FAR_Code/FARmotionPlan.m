@@ -1,4 +1,4 @@
-function [phi, time, robotProses] = FARmotionPlan(road, startProse, sampleTime)
+function [phi, time, robotPoses] = FARmotionPlan(road, startPose, sampleTime)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -7,9 +7,9 @@ function [phi, time, robotProses] = FARmotionPlan(road, startProse, sampleTime)
 %road is the waypoints of the path planned from the algorithms
 %thetaInit is the initial angle of the robot from the x axis
 
-robotInitialLocation = startProse(1:2);
+robotInitialLocation = startPose(1:2);
 robotGoal            = road(end,:);
-robotCurrentPose     = startProse';
+robotCurrentPose     = startPose';
 
 %%
 
@@ -41,7 +41,7 @@ Or = [];
 Ol = [];
 time = [];
 
-robotProses = []; 
+robotPoses = []; 
 
 while( distanceToGoal > goalRadius )
     
@@ -71,7 +71,7 @@ while( distanceToGoal > goalRadius )
     time(end+1) = t*iter; %elaped time matrix
     iter = iter+1;
     phi = [Or Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
-    robotProses = [robotProses;robotCurrentPose'];
+    robotPoses = [robotPoses;robotCurrentPose'];
 
 end
 

@@ -1,6 +1,7 @@
 function [simulated_robots] = FARMultiRobotController(G,robot_array,k,timeStep)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
+epsilon = 0.00001; %precision for some parts
 
 cell_dim = size(robot_array);
 num_robots = cell_dim(2);
@@ -23,7 +24,7 @@ currentTime = 0.0;
 %init steps for each path
 for i = 1:num_robots
     robot_array(i).pose = [robot_array(i).start 0]; % \in R^(1x3)
-    robot_array(i).currentProse = [robot_array(i).start 0];
+    robot_array(i).currentPose = [robot_array(i).start 0];
     robot_array(i).time = [currentTime];
     robot_array(i).plannedTime = currentTime; % Time that robot is planned upuntil
     robot_array(i).phi = [0,0];
@@ -107,15 +108,15 @@ while sum(running)
                    running(i) = 0;
                 end
 
-                startProse = bot.currentProse;
+                startPose = bot.currentPose;
                 
-                [phi, time, robotProses] = FARmotionPlan(road, startProse, timeStep);
+                [phi, time, robotPoses] = FARmotionPlan(road, startPose, timeStep);
                 bot.phi = [bot.phi;phi];
                 bot.time = [bot.time, time+bot.time(end)];
-                bot.pose = [bot.pose;robotProses];
+                bot.pose = [bot.pose;robotPoses];
                 
                 bot.plannedTime = bot.time(end);
-                bot.currentProse = bot.pose(end,:);
+                bot.currentPose = bot.pose(end,:);
                 just_started_queue = [just_started_queue, i];
                 %Even if it is 'completed' it will be added into the queue
                 %So that nodes are removed from the reservation at the
@@ -126,8 +127,7 @@ while sum(running)
                 bot.time = [bot.time, currentTime];
                 bot.pose = [bot.pose;bot.pose(end,:)];
                 bot.plannedTime = bot.time(end);
-                bot.currentProse = bot.pose(end,:);
-                disp('here');
+                bot.currentPose = bot.pose(end,:);
                 no_movement_queue = [no_movement_queue, i];
             end
             
@@ -146,6 +146,7 @@ while sum(running)
             %added back into the queue
         end
         robot_array(i) = bot;
+        
     end
     
     waiting_queue = [no_movement_queue,wait_for_completion_queue,just_started_queue]; 
@@ -155,24 +156,22 @@ end
 
 % Record Time Of Completion For Each Robot
 timeEnd = zeros(1,num_robots);
-for i = 1:1:num_robots
+for i = 1:num_robots
      timeEnd(i) = robot_array(i).time(end);
      robot_array(i).endTime = timeEnd(i);
 end
 
 % Add To reach time End
 fillTime = max(timeEnd);
-
 for i = 1:1:num_robots
      additional = timeEnd(i) + timeStep;
-     moreTime = [additional:timeStep:fillTime];
+     moreTime = [additional:timeStep:fillTime+epsilon];
      num_addition = length(moreTime);
-     additionalProse = repmat(robot_array(i).pose(end,:),num_addition,1);
+     additionalPose = repmat(robot_array(i).pose(end,:),num_addition,1);
      additionalPhi = repmat([0,0],num_addition,1);
      robot_array(i).time = [robot_array(i).time,moreTime];
-     robot_array(i).pose = [robot_array(i).pose;additionalProse];
+     robot_array(i).pose = [robot_array(i).pose;additionalPose];
      robot_array(i).phi = [robot_array(i).phi;additionalPhi];
-     
 end
 
 simulated_robots = robot_array;

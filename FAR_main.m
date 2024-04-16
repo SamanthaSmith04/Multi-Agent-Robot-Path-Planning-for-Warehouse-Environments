@@ -66,13 +66,13 @@ bot2.road = road2;
 bot3.road = road3;
 
 robot_array = [bot1, bot2, bot3];
-k = 5; %reserve upto 5 steps (for now)
+k = 40; %reserve upto 5 steps (for now)
 timeStep = 0.1;
 [simulated_robots] = FARMultiRobotController(G,robot_array,k,timeStep);
 
 figureNumber = 2;
-[done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
-
+%[done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
+[dist, avgDist, stdDist] = distanceBetweenRobot(simulated_robots);
 
 
 
