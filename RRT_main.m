@@ -47,6 +47,10 @@ bot1.road = road1;
 bot2.road = road2;
 %bot3.road = road3;
 
+bot1.original_road = road1;
+bot2.original_road = road2;
+%bot3.original_road = road3;
+
 bot1.thetaInit = 45;
 bot2.thetaInit = 45;
 bot3.thetaInit = 45;
