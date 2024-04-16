@@ -140,7 +140,7 @@ while( any(distances > goalRadius))
 end
     phi = zeros(2)
     
-    plot_robot_paths(robots_array, 3, map_array)
+    plot_robot_paths(robots_array, 3, map_array, scale)
 end
 
 
