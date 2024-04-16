@@ -1,4 +1,4 @@
-function [phi, time, position_time_matrix] = motionPlan_RRT(robots_array, map, map_original_array, scale)
+function [phi, time, robots_array] = motionPlan_RRT(robots_array, map, map_original_array, scale)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -53,7 +53,7 @@ for i=1:num_robots
     robots_array(i).time = 0;
 
 end
-goalRadius = 1;
+goalRadius = 0.3;
 
 %%
 
@@ -139,7 +139,7 @@ while( any(distances > goalRadius))
 
 end
     phi = zeros(2)
-    %position_time_matrix = robots_array(i).robotPosesAndTimestamps(2:end);
+    
     plot_robot_paths(robots_array, 3, map_array)
 end
 
