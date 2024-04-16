@@ -48,7 +48,7 @@ frameSize = robot.TrackWidth/0.8;
 
 
 
-vizRate = rateControl(1/(timeStep*0.1));
+vizRate = rateControl(3*(1/(timeStep*0.1)));
 %Assume All Robots have the same number of time stamps
 hold off;
 

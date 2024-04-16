@@ -13,8 +13,8 @@ csv_file2 = "environment_files/GridLayout2.csv";
 num_robots = 2
 
 % temp positions for testing, can be random later if we want
-start_pos = [1,1]*grid_size;% - (grid_size)/2; (To center within grid Point)
-goal_pos = [43,2]*grid_size;% - (grid_size)/2;
+start_pos = [1,20]*grid_size;% - (grid_size)/2; (To center within grid Point)
+goal_pos = [1,23]*grid_size;% - (grid_size)/2;
 
 
 start_pos2 = [1,4]*grid_size;% - (grid_size)/2; (To center within grid Point)
