@@ -10,7 +10,7 @@ csv_file = "environment_files/GridLayout2.csv";
 
 csv_file2 = "environment_files/GridLayout2.csv";
 
-robot_positions_csv = ""
+robot_positions_csv = "Experiment_CSV/exp2_map2.csv"
 
 robot_positions = get_position_and_goals(robot_positions_csv);
 
@@ -27,7 +27,7 @@ for num_robots=1: size(robot_positions,1)
     robot.original_road = robot.road;
     robot.thetaInit = 45;
 
-    robots(i) = robot;
+    robots(num_robots) = robot;
 end
 
 disp("ready")

@@ -1,3 +1,18 @@
+%{
+    Updates the occupacy map for the environment so other robots can detect
+    the robot
+    Parameters:
+        map: The occupacy map of the environment
+        robot: The robot to update the map at it's position
+        map_array: The matrix representation of the environment
+        map_array_original: The initial environment (no robots)
+        value: The value to update the occupied grids to
+
+    Returns:
+        oc_map: The updated occupacy map
+        updated_array: The updated map_array
+%}
+
 function [oc_map, updated_array] = update_lidar_map(map, robot, map_array, map_array_original, value)
     oc_map = map;
     updated_array = map_array;

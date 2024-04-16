@@ -132,7 +132,7 @@ while( any(distances > goalRadius))
         [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
 
     end
-        %visualizeRRTmotion3(robots_array, t, map_array, scale,2);
+        visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix
         distances = goal_distance_all_robots(robots_array);
