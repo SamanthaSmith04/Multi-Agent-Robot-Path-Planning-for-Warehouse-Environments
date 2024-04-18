@@ -17,8 +17,8 @@ function plot_robot_paths(robots, fig_num_start, map_array, scale)
 
     %% Plot motion vs planned path
     figure(fig_num_start)
-    xlim([0, size(map_array,2)]);
-    ylim([0, size(map_array,1)]);
+    xlim([0, size(map_array,2)*scale]);
+    ylim([0, size(map_array,1)*scale]);
     hold on;
     for i = 1: length(robots)
         plot(robots(i).pose(:, 1), robots(i).pose(:, 2), motion_plots{i});
@@ -39,13 +39,13 @@ function plot_robot_paths(robots, fig_num_start, map_array, scale)
     fig_num_start = fig_num_start +1;
     figure(fig_num_start)
     figure(fig_num_start)
-    xlim([0, size(map_array,2)]);
-    ylim([0, size(map_array,1)]);
+    xlim([0, size(map_array,2)*scale]);
+    ylim([0, size(map_array,1)*scale]);
 
     x_min = 0;
     y_min = 0;
-    x_max = size(map_array,2);
-    y_max = size(map_array,1);
+    x_max = size(map_array,2)*scale;
+    y_max = size(map_array,1)*scale;
 
     map_dims = size(map_array);
     hold on;
@@ -55,7 +55,7 @@ function plot_robot_paths(robots, fig_num_start, map_array, scale)
     % Plot the obstacles
     for i = 1:map_dims(1) %rows
         for j = 1:map_dims(2) %cols
-            if map(i, j) == 1
+            if map_array(i, j) == 1
                 rectangle('Position', [(j-1)*scale, (map_dims(1)-i)*scale, scale, scale], 'FaceColor', 'r', 'EdgeColor', 'none');
                 
             end
@@ -80,6 +80,8 @@ function plot_robot_paths(robots, fig_num_start, map_array, scale)
         fig_num_start = fig_num_start +1;
         figure(fig_num_start)
         hold on;
+        xlim([0, size(map_array,2)*scale]);
+        ylim([0, size(map_array,1)*scale]);
         plot(robots(i).original_road(:, 1), robots(i).original_road(:, 2), "r--");
         plot(robots(i).original_road(1, 1), original_road(i).pose(1, 2), "ro", 'MarkerSize', 10); % Start point
         plot(robots(i).road(:, 1), robots(i).road(:, 2), "b-");

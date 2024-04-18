@@ -1,4 +1,4 @@
-function [phi, time, robots_array] = motionPlan_RRT_multiple(robots_array, map, map_original_array, scale)
+function [phi, time, robots_array] = motionPlan_RRT(robots_array, map, map_original_array, scale)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -27,7 +27,7 @@ for i=1:num_robots
     % Create lidar sensor
     robots_array(i).lidar = LidarSensor;
     robots_array(i).lidar.sensorOffset = [0,0];
-    robots_array(i).lidar.scanAngles = linspace(-pi/2,pi/2,50);
+    robots_array(i).lidar.scanAngles = linspace(-pi/3,pi/3,50);
     robots_array(i).lidar.maxRange = 3;
     
     % Create visualizer
@@ -130,6 +130,8 @@ while( any(distances > goalRadius))
         robots_array(i).time = robots_array(i).time + t;
 
         [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
+        ranges = robots_array(i).lidar(robots_array(i).pose(iter,:)');
+        robots_array(i).viz(robots_array(i).pose(iter, :)',robots_array(i).road, ranges)
 
     end
         visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);

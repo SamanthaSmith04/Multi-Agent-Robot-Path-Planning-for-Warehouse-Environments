@@ -1,4 +1,3 @@
-get_map_array("environment_files/GridLayout2.csv");
 clc;
 clear;
 close all;
@@ -13,10 +12,7 @@ close all;
 
 % Create waypoints
 %% Initial Values
-<<<<<<< HEAD
 %load exampleMap
-=======
->>>>>>> 7fb4f5492ef31a16946bf14a4d423efa8017a117
 
 grid_size = 1; %UNITS????
 
