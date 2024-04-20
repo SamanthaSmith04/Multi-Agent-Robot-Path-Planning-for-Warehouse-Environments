@@ -4,7 +4,7 @@ close all;
 
 %% Initial Values
 addpath("environment_files", "initialization", "RRT_algorithm", "motion_planning");
-grid_size = 2; %UNITS????
+grid_size = 1; %UNITS????
 
 csv_file = "environment_files/GridLayout1.csv";
 
@@ -19,7 +19,7 @@ map_array = get_map_array(csv_file);
 for num_robots=1: size(robot_positions,1)
     robot.start = robot_positions(num_robots, 1:2)*grid_size;
     robot.goal = robot_positions(num_robots, 3:4)*grid_size;
-    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, false);
+    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, true);
     robot.original_road = robot.road;
     robot.thetaInit = 45;
 

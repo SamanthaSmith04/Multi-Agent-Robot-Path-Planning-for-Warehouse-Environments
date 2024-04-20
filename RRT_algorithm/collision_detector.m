@@ -16,7 +16,7 @@
 function  c_test = collision_detector(xNear,yNear,xNew, yNew, map, scale)
     % we test 10 uniformally distributed points along the line that
     % connects (xNear,yNear) to (xNew,yNew)
-    additional_threshold = 0.5; % Helps keep the position away from the walls better
+    additional_threshold = 0; % Helps keep the position away from the walls better
     s = 0-additional_threshold:0.05:1+additional_threshold;
     xq = xNear + s.*(xNew-xNear);
     yq = yNear + s.*(yNew-yNear);

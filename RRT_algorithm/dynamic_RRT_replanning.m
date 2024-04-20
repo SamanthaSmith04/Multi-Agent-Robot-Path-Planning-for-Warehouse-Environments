@@ -31,8 +31,8 @@ function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replan
         
        Aj_minus = angle_to_waypoint(closest_waypoint_index);
        Aj_plus = angle_to_waypoint(closest_waypoint_index + 1);
-       Aj = (Aj_minus + Aj_plus) / 2
-       Csat = saturation_function(Aj, uM, T)
+       Aj = (Aj_minus + Aj_plus) / 2;
+       Csat = saturation_function(Aj, uM, T);
        %Csat = Aj;
        % Calculate total velocity
        v = sqrt(current_velocity(1)^2 + current_velocity(2)^2);
