@@ -31,4 +31,4 @@ for num_robots=1: size(robot_positions,1)
 end
 
 disp("ready")
-[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size);
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size, true);
