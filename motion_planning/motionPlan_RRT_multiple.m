@@ -28,7 +28,7 @@ for i=1:num_robots
     robots_array(i).lidar = LidarSensor;
     robots_array(i).lidar.sensorOffset = [0,0];
     robots_array(i).lidar.scanAngles = linspace(-pi/2,pi/2,50);
-    robots_array(i).lidar.maxRange = 3;
+    robots_array(i).lidar.maxRange = 5;
     
     % Create visualizer
     robots_array(i).viz = Visualizer2D;
@@ -133,7 +133,7 @@ while( any(distances > goalRadius))
 
     end
         if visual && mod(iter, speed) == 0
-            visualizeRRTmotion3(robots_array, t, map_array, scale,2);
+            visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);
         end
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix

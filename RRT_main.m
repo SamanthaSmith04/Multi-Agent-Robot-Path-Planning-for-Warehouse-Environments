@@ -36,4 +36,4 @@ end
 map = robotics.OccupancyGrid(scaled_matrix, 1);
 
 disp("ready")
-[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, true, 10);
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, true, 14);
