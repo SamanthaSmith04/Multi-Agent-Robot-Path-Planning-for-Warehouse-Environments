@@ -9,7 +9,7 @@ function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replan
    % Check if safety region is empty
    ranges = lidar(current_pose);
    if any(ranges < safety_region_size)
-       disp(min(ranges))
+%        disp(min(ranges))
        % Calculate deviation angle C(t) between current pose and waypoint
        theta_t = atan2(plan(current_plan_step, 2) - current_pose(2), plan(current_plan_step, 1) - current_pose(1));
        theta = current_pose(3);
