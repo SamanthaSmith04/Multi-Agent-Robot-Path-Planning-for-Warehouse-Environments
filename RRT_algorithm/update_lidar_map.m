@@ -25,8 +25,8 @@ function [oc_map, updated_array] = update_lidar_map(map, robot, map_array, map_a
     y_ceil = size(map_array_original, 1) - floor(y);
     y_floor = size(map_array_original, 1) - ceil(y);
 
-    for x_grid = x_floor : x_ceil
-        for y_grid = y_floor : y_ceil
+    for x_grid = x_floor - 1: x_ceil + 1
+        for y_grid = y_floor - 1 : y_ceil + 1
             if (x_grid > 0 && y_grid > 0 && ...
                     x_grid <= size(map_array_original, 2) && y_grid <= size(map_array_original, 1) && ...
                     map_array_original(y_grid, x_grid) ~= 1) 
