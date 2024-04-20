@@ -23,7 +23,7 @@ map = robotics.OccupancyGrid(map_array2, 1);
 for num_robots=1: size(robot_positions,1)
     robot.start = robot_positions(num_robots, 1:2);
     robot.goal = robot_positions(num_robots, 3:4);
-    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, true);
+    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, false);
     robot.original_road = robot.road;
     robot.thetaInit = 45;
 
@@ -31,4 +31,4 @@ for num_robots=1: size(robot_positions,1)
 end
 
 disp("ready")
-[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size, true);
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array2, grid_size, false);

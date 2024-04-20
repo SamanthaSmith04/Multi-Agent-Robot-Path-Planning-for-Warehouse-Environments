@@ -83,9 +83,9 @@ function plot_robot_paths(robots, fig_num_start, map_array, scale)
         xlim([0, size(map_array,2)*scale]);
         ylim([0, size(map_array,1)*scale]);
         plot(robots(i).original_road(:, 1), robots(i).original_road(:, 2), "r--");
-        plot(robots(i).original_road(1, 1), original_road(i).pose(1, 2), "ro", 'MarkerSize', 10); % Start point
+        plot(robots(i).original_road(1, 1), robots(i).original_road(1, 2), "ro", 'MarkerSize', 10); % Start point
         plot(robots(i).road(:, 1), robots(i).road(:, 2), "b-");
-        plot(robots(i).original_road(end, 1), original_road(i).pose(end, 2), "bo", 'MarkerSize', 10); % Start point
+        plot(robots(i).original_road(end, 1), robots(i).original_road(end, 2), "bo", 'MarkerSize', 10); % Start point
         title(['Robot ', num2str(i), ' Original Path Plan vs Updated Path Plan']);
         xlabel('X Position');
         ylabel('Y Position');
