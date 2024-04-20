@@ -79,7 +79,7 @@ while( any(distances > goalRadius))
         if (distances(i) <= goalRadius) 
             continue;
         end     
-        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 0);
+        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 0, scale);
 
         % Compute the controller outputs, i.e., the inputs to the robot
         [v, omega] = robots_array(i).controller(robots_array(i).pose(end, :)');        
@@ -129,11 +129,11 @@ while( any(distances > goalRadius))
         robots_array(i).phi = [robots_array(i).Or robots_array(i).Ol];        %matrix 1st column Right wheel angular velocity 2nd column left
         robots_array(i).time = robots_array(i).time + t;
 
-        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
+        [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1, scale);
 
     end
         if visual && mod(iter, speed) == 0
-            visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);
+            visualizeRRTmotion3(robots_array, t, map_array, scale,2);
         end
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix

@@ -15,7 +15,6 @@ robot_positions = get_position_and_goals(robot_positions_csv);
 %% Set up grid
 map_array = get_map_array(csv_file);
 
-map = robotics.OccupancyGrid(map_array, 1);
 % any other pre-planning operations that need to be done
 for num_robots=1: size(robot_positions,1)
     robot.start = robot_positions(num_robots, 1:2)*grid_size;
@@ -26,6 +25,15 @@ for num_robots=1: size(robot_positions,1)
 
     robots(num_robots) = robot;
 end
+
+scaled_matrix = zeros(size(map_array, 1) * grid_size, size(map_array, 2) * grid_size);
+for i = 1:size(map_array, 1)
+    for j = 1:size(map_array, 2)
+        scaled_matrix((i-1)*grid_size+1:i*grid_size, (j-1)*grid_size+1:j*grid_size) = map_array(i, j);
+    end
+end
+
+map = robotics.OccupancyGrid(scaled_matrix, 1);
 
 disp("ready")
 [phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, true, 10);

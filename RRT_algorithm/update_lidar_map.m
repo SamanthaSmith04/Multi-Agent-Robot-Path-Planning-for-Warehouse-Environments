@@ -13,20 +13,20 @@
         updated_array: The updated map_array
 %}
 
-function [oc_map, updated_array] = update_lidar_map(map, robot, map_array, map_array_original, value)
+function [oc_map, updated_array] = update_lidar_map(map, robot, map_array, map_array_original, value, scale)
     oc_map = map;
     updated_array = map_array;
-    x = robot.pose(end, 1);
-    y = robot.pose(end, 2);
+    x = robot.pose(end, 1) / scale;
+    y = robot.pose(end, 2) / scale;
 
-    x_ceil = ceil(x);
-    x_floor = floor(x);
+    x_ceil = ceil(x + 0.5);
+    x_floor = floor(x - 0.5);
 
-    y_ceil = size(map_array_original, 1) - floor(y);
-    y_floor = size(map_array_original, 1) - ceil(y);
+    y_ceil = size(map_array_original, 1) - floor(y - 0.5);
+    y_floor = size(map_array_original, 1) - ceil(y + 0.5);
 
-    for x_grid = x_floor - 1: x_ceil + 1
-        for y_grid = y_floor - 1 : y_ceil + 1
+    for x_grid = x_floor: x_ceil
+        for y_grid = y_floor: y_ceil
             if (x_grid > 0 && y_grid > 0 && ...
                     x_grid <= size(map_array_original, 2) && y_grid <= size(map_array_original, 1) && ...
                     map_array_original(y_grid, x_grid) ~= 1) 

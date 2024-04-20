@@ -1,7 +1,7 @@
 function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replanning(plan, current_plan_step, lidar, current_pose, uM, current_velocity, map, scale, L, sampling_interval)
    updated_plan = plan;
    changed_plan = false;
-   safety_region_size = 2.5; % Safety region size in units
+   safety_region_size = 3; % Safety region size in units
    current_index_update = 0;
    deletion_threshold = 1.5;
    T = sampling_interval; % Sampling interval in seconds
@@ -9,6 +9,7 @@ function [updated_plan, changed_plan, current_index_update] = dynamic_RRT_replan
    % Check if safety region is empty
    ranges = lidar(current_pose);
    if any(ranges < safety_region_size)
+       disp(min(ranges))
        % Calculate deviation angle C(t) between current pose and waypoint
        theta_t = atan2(plan(current_plan_step, 2) - current_pose(2), plan(current_plan_step, 1) - current_pose(1));
        theta = current_pose(3);
