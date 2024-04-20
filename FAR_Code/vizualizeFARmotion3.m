@@ -51,7 +51,7 @@ frameSize = robot.TrackWidth/0.8;
 vizRate = rateControl(1/(timeStep));
 %Assume All Robots have the same number of time stamps
 numSteps = length(simulated_robots(1).time)
-for i = 1:1:numSteps
+for i = 1:10:numSteps
     hold off;
     
     %Redraw Obstacles

@@ -37,6 +37,8 @@ while sum(running)
         if(can_remove_reservation(i))
             if(~running(i))
                 nnzm = nnz(robot_array(i).reserved_node);
+                disp(i);
+                disp(nnzm);
                 currently_occuppied(i) = robot_array(i).reserved_node(nnzm);
             else
                 currently_occuppied(i) = robot_array(i).reserved_node(k);
