@@ -1,4 +1,4 @@
-function [phi, time, robots_array] = motionPlan_RRT_multiple(robots_array, map, map_original_array, scale, visual)
+function [phi, time, robots_array] = motionPlan_RRT_multiple(robots_array, map, map_original_array, scale, visual, speed)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -132,7 +132,7 @@ while( any(distances > goalRadius))
         [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 1);
 
     end
-        if visual
+        if visual && mod(iter, speed) == 0
             visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);
         end
         iter = iter+1;
@@ -143,7 +143,7 @@ while( any(distances > goalRadius))
 end
     phi = zeros(2)
     
-    plot_robot_paths(robots_array, 3, map_array, scale)
+    plot_robot_paths(robots_array, 3, map_original_array, scale)
 end
 
 
