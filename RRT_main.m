@@ -6,9 +6,11 @@ close all;
 addpath("environment_files", "initialization", "RRT_algorithm", "motion_planning");
 grid_size = 1; %UNITS????
 
-csv_file = "environment_files/GridLayout1.csv";
+csv_file = "environment_files/GridLayout2.csv";
 
 robot_positions_csv = "Experiment_CSV/exp4_both.csv";
+
+outputStructFileName = "Experiment_Results/RRT_exp1map1.xml";
 
 robot_positions = get_position_and_goals(robot_positions_csv);
 
@@ -19,7 +21,7 @@ map_array = get_map_array(csv_file);
 for num_robots=1: size(robot_positions,1)
     robot.start = robot_positions(num_robots, 1:2)*grid_size;
     robot.goal = robot_positions(num_robots, 3:4)*grid_size;
-    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, true);
+    robot.road = RRT(robot.start, robot.goal, map_array, grid_size, false);
     robot.original_road = robot.road;
     robot.thetaInit = 45;
 
@@ -36,4 +38,13 @@ end
 map = robotics.OccupancyGrid(scaled_matrix, 1);
 
 disp("ready")
-[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, true, 14);
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, false, 14);
+
+%%Code Below To Save Results (Path name specified at top)
+[dist, avgDist, stdDist] = distanceBetweenRobot(robots);
+robots = pathLength(robots);
+write_exp_struct(robots,outputStructFileName)
+
+tempStruct = read_exp_struct(outputStructFileName);
+
+disp(tempStruct.distances - dist)

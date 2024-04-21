@@ -77,6 +77,7 @@ while( any(distances > goalRadius))
 
     for i=1:num_robots
         if (distances(i) <= goalRadius) 
+            robots_array(i).pose = [robots_array(i).pose; robots_array(i).pose(end, :)]; 
             continue;
         end     
         [map, map_array] = update_lidar_map(map, robots_array(i), map_array, map_original_array, 0, scale);
@@ -144,6 +145,9 @@ end
     phi = zeros(2)
     
     plot_robot_paths(robots_array, 3, map_original_array, scale)
+    for i = 1: size(robots_array)
+        robots_array(i).endTime = robots_array(i).time(end);
+    end 
 end
 
 
