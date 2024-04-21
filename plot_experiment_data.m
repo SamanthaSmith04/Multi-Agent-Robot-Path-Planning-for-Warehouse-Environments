@@ -2,8 +2,8 @@ clc;
 clear;
 close all;
 
-fileNameFAR = "Experiment_Results/FAR_exp1map1.xml";
-fileNameRRT = "Experiment_Results/RRT_exp1map1.xml";
+fileNameFAR = "Experiment_Results/FAR_exp1map1-2.xml";
+fileNameRRT = "Experiment_Results/RRT_exp1map1-2.xml";
 
 expStructFAR = read_exp_struct(fileNameFAR);
 expStructRRT = read_exp_struct(fileNameRRT);

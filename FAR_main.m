@@ -8,7 +8,7 @@ grid_size = 2; %UNITS????
 
 csv_file = "environment_files/GridLayout1.csv";
 robot_positions_csv = "Experiment_CSV/exp1_both.csv";
-outputStructFileName = "Experiment_Results/FAR_exp1map1.xml";
+outputStructFileName = "Experiment_Results/FAR_exp1map1-1.xml";
 
 robot_positions = get_position_and_goals(robot_positions_csv)*grid_size;
 
@@ -32,8 +32,8 @@ end
 if length(robots) >= 1
     [start,target] = getStartAndTarget(map,grid_size,robots(1).start,robots(1).goal);
     
-    %node_path = AstarDigraph(G,start,target,map,grid_size,robots(1).start,robots(1).goal,fig_num);
-    node_path = AstarDigraph(G,start,target);
+    node_path = AstarDigraph(G,start,target,map,grid_size,robots(1).start,robots(1).goal,fig_num);
+    %node_path = AstarDigraph(G,start,target);
     %Add Road With points to each bot
     x_coo = G.Nodes.X(node_path);
     y_coo = G.Nodes.Y(node_path);
@@ -73,7 +73,7 @@ timeStep = 0.1;
 [simulated_robots] = FARMultiRobotController(G,robots,k,timeStep);
 
 figureNumber = 2;
-%[done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
+% [done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
 [dist, avgDist, stdDist] = distanceBetweenRobot(simulated_robots);
 FAR_plot_robot_paths(simulated_robots, length(simulated_robots), map, grid_size)
 
