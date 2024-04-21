@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <struct>
     <endTime>198.4</endTime>
+    <endTime>116.4</endTime>
+    <endTime>114.8</endTime>
     <path_length>198.4</path_length>
+    <path_length>116.4</path_length>
+    <path_length>114.8</path_length>
     <avg_dist>38.1824</avg_dist>
     <avg_dist>35.4872</avg_dist>
     <avg_dist>20.1398</avg_dist>

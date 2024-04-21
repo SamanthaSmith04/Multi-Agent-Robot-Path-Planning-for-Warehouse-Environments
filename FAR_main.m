@@ -75,12 +75,10 @@ timeStep = 0.1;
 figureNumber = 2;
 %[done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
 [dist, avgDist, stdDist] = distanceBetweenRobot(simulated_robots);
-%FAR_plot_robot_paths(simulated_robots, length(simulated_robots), map, grid_size)
+FAR_plot_robot_paths(simulated_robots, length(simulated_robots), map, grid_size)
 
 %%Code Below To Save Results (Path name specified at top)
 simulated_robots = pathLength(simulated_robots);
 write_exp_struct(simulated_robots,outputStructFileName)
 
 tempStruct = read_exp_struct(outputStructFileName);
-
-disp(tempStruct.distances - dist)

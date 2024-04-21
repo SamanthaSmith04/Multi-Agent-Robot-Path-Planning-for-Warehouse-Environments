@@ -5,13 +5,13 @@ function [] = write_exp_struct(simulated_robots,outputStructFileName)
 extraPrecision = 100000;
 [dist, avgDist, stdDist] = distanceBetweenRobot(simulated_robots);
 endTimesAll = [];
-lengthAll = [];
+le = [];
 for i = 1:length(simulated_robots)
-    endTimesAll = [endTimesAll,simulated_robots(i).endTime];
-    lengthAll = [lengthAll,simulated_robots(i).path_length];
+    endTimesAll = [endTimesAll];
+    endTimesDist = [];
 end
-experiment_struct.endTime = endTimesAll;
-experiment_struct.path_length = lengthAll;
+experiment_struct.endTime = simulated_robots.endTime;
+experiment_struct.path_length = simulated_robots.path_length;
 experiment_struct.avg_dist = avgDist;
 experiment_struct.std_dist = stdDist;
 
