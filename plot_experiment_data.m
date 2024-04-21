@@ -11,7 +11,7 @@ expStructRRT = read_exp_struct(fileNameRRT);
 
 allDist = table;
 %%Plot Box Plot For Distances/Proximity
-shapeMap = size(expStructRRT.distances)
+shapeMap = size(expStructRRT.distances);
 if (shapeMap(2) > 1)
     %Assume 3 Robots 
     distances1 = expStructRRT.distances(:,1);
@@ -62,7 +62,10 @@ end
 allDist.group = categorical(allDist.group);
 allDist.method = categorical(allDist.method);
 
-boxchart(allDist.group,allDist.distance,'GroupByColor',allDist.method)
+XFAR = categorical(["1->2","1->3","2->3"]);
+XRRT = categorical(["1->2","1->3","2->3"]);
+
+b = boxchart(allDist.group,allDist.distance,'GroupByColor',allDist.method);
 ylabel('Robot Proximity (m)')
 xlabel('Pairwise Selection of Robots');
 legend

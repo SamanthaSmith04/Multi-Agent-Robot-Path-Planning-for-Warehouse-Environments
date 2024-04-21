@@ -29,7 +29,6 @@ for i = 1:num_robots
     robot_array(i).plannedTime = currentTime; % Time that robot is planned upuntil
     robot_array(i).phi = [0,0];
     robot_array(i).reserved_node = zeros(1,k); % Nodes Currently Reserved by the robot
-    currently_occuppied(i) = robot_array(i).node_path(1);
 end
 
 while sum(running)
@@ -47,7 +46,10 @@ while sum(running)
         end
     end
     can_remove_reservation = zeros(1,num_robots); 
-
+    
+    if(currentTime == 53.500)
+           disp("");
+    end
     
     %Break Queue into 3 parts to esnure fairness in reserving nodes
     no_movement_queue = [];
@@ -56,13 +58,9 @@ while sum(running)
     
     for i=waiting_queue
         bot = robot_array(i);
-        if(i==1 && currentTime + epsilon >= 53.500 && currentTime - epsilon <= 53.500 )
-            disp(""); 
-        end
         completed = 0; %Indicates if a robot has compelted its path
         % Attempt To Reserve Next k Nodes
-        %Be espilon greater to avoid round errors
-        if currentTime - epsilon > bot.plannedTime && running(i)
+        if currentTime > bot.plannedTime && running(i)
             
             %Compute how many nodes have been reserved so far...
             num_current = nnz(bot.reserved_node);
@@ -130,7 +128,6 @@ while sum(running)
                 %If no movement, then the robot remains stationary 
                 bot.phi = [bot.phi;0 0];
                 bot.time = [bot.time, currentTime];
-                
                 bot.pose = [bot.pose;bot.pose(end,:)];
                 bot.plannedTime = bot.time(end);
                 bot.currentPose = bot.pose(end,:);
