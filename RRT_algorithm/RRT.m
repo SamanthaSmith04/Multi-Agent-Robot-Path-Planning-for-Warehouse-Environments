@@ -11,7 +11,7 @@
                    Order of points: start -> goal
 %}
 
-function path_plan = RRT(start_pos, goal_pos, map, scale, visualize)
+function path_plan = RRT(start_pos, goal_pos, map, scale, visualize, figure_num)
     %% rrt config parameters
     bias = 1;
     max_dist = scale*4;
@@ -34,7 +34,7 @@ function path_plan = RRT(start_pos, goal_pos, map, scale, visualize)
 
     %% plot the initial RRT plan graph
     if visualize
-        figure(1); hold on; grid on
+        figure(figure_num); hold on; grid on
         
         axis equal
         axis([x_min,x_max,y_min,y_max]);
