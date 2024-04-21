@@ -73,11 +73,7 @@ timeStep = 0.1;
 [simulated_robots] = FARMultiRobotController(G,robots,k,timeStep);
 
 figureNumber = 2;
-<<<<<<< Updated upstream
-% [done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
-=======
 [done] = vizualizeFARmotion3(simulated_robots,timeStep,map,grid_size,figureNumber);
->>>>>>> Stashed changes
 [dist, avgDist, stdDist] = distanceBetweenRobot(simulated_robots);
 FAR_plot_robot_paths(simulated_robots, length(simulated_robots), map, grid_size)
 
