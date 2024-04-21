@@ -9,13 +9,13 @@ end
 
 figure(figureNumber)
 
-
+pause(1)
 scale = grid_size;
-x_min = 0;
-y_min = 0; 
+x_min = 0-0.5;
+y_min = 0-0.5; 
 map_dims = size(map);
-x_max = (map_dims(2)) * scale;
-y_max = (map_dims(1)) * scale;
+x_max = 0.5+ (map_dims(2)) * scale;
+y_max = 0.5+ (map_dims(1)) * scale;
 
 axis equal
 axis([x_min,x_max,y_min,y_max]);
@@ -51,7 +51,7 @@ frameSize = robot.TrackWidth/0.8;
 vizRate = rateControl(1/(timeStep));
 %Assume All Robots have the same number of time stamps
 numSteps = length(simulated_robots(1).time);
-for i = 1:25:numSteps
+for i = 1:5:numSteps
     hold off;
     
     %Redraw Obstacles

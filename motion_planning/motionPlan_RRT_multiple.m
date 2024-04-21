@@ -1,4 +1,4 @@
-function [phi, time, robots_array] = motionPlan_RRT_multiple(robots_array, map, map_original_array, scale, visual, speed)
+function [phi, time, robots_array] = motionPlan_RRT_multiple(robots_array, map, map_original_array, scale, visual, speed, fig_num)
 
 %phi is the angular velocity of each of the wheels at each instance of
 %sampletime
@@ -134,7 +134,7 @@ while( any(distances > goalRadius))
 
     end
         if visual && mod(iter, speed) == 0
-            visualizeRRTmotion3(robots_array, t, map_original_array, scale,2);
+            visualizeRRTmotion3(robots_array, t, map_original_array, scale,fig_num);
         end
         iter = iter+1;
         time(end+1) = t*iter; %elaped time matrix
