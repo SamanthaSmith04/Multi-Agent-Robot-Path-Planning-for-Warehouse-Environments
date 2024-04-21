@@ -5,11 +5,8 @@ close all;
 %% Initial Values
 addpath("environment_files", "initialization", "RRT_algorithm", "motion_planning");
 grid_size = 1; %UNITS????
-
-csv_file = "environment_files/GridLayout2.csv";
-
-robot_positions_csv = "Experiment_CSV/exp4_both.csv";
-
+csv_file = "environment_files/GridLayout1.csv";
+robot_positions_csv = "Experiment_CSV/exp1_both.csv";
 outputStructFileName = "Experiment_Results/RRT_exp1map1.xml";
 
 robot_positions = get_position_and_goals(robot_positions_csv);
@@ -38,7 +35,7 @@ end
 map = robotics.OccupancyGrid(scaled_matrix, 1);
 
 disp("ready")
-[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, false, 14);
+[phi, time, robots] = motionPlan_RRT_multiple(robots, map, map_array, grid_size, false, 5);
 
 %%Code Below To Save Results (Path name specified at top)
 [dist, avgDist, stdDist] = distanceBetweenRobot(robots);
