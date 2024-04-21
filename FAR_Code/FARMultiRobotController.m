@@ -87,6 +87,7 @@ while sum(running)
                     bot.reserved_node(j) = next_node;
                     bot.node_path = bot.node_path(2:end); %% Node can be removed 
                 else
+                    disp(i);
                     if(completed)
                         completed = 0;
                     end
@@ -138,7 +139,7 @@ while sum(running)
             end
             
         else
-            if (currentTime+timeStep >= bot.plannedTime)
+            if (currentTime-epsilon +timeStep >= bot.plannedTime)
                 %If at the next time step the planned time will be up
                 %then the node reservations held by the robot can be removed
                 can_remove_reservation(i) = 1;
